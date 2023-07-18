@@ -1,0 +1,38 @@
+{
+  "name": "interceptorproxy",
+  "version": "1.0.0",
+  "description": "a Node.js Proxy module that allows for intercept and analyze of application layer protocols",
+  "keywords": [
+    "Proxy",
+    "Reverse Engineering",
+    "Analysis",
+    "HTTP",
+    "HTTPS",
+    "HTTP2",
+    "WebSocket",
+    "WebSockets",
+    "networking",
+    "server",
+    "client"
+  ],
+  "main": "InterceptorProxy.js",
+  "exports": {
+    ".": {
+      "import": "./InterceptorProxy.js",
+      "require": "./InterceptorProxy.js"
+    }
+  },
+  "engines": {
+    "node": ">=18.14.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marcin Terebus <terebusmarcin@gmail.com>",
+  "license": "MIT",
+  "types": "./typings/index.d.ts",
+  "dependencies": {
+    "node-forge": "^1.3.1",
+    "websocket": "^1.0.34"
+  }
+}
