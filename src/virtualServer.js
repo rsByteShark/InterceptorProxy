@@ -401,7 +401,7 @@ class VirtualServer {
 
                         streamToTarget.on("end", () => {
 
-                            this.proxyStash[this.connectionUID].connectionEventReciver.emit("H2_RESPONSE_DATA_END");
+                            this.proxyStash[this.connectionUID].connectionEventReciver.emit("H2_RESPONSE_DATA_END", stream.id);
 
                             if (responseDataPromiseResolved !== undefined) {
 
@@ -457,7 +457,7 @@ class VirtualServer {
 
                         stream.on("end", () => {
 
-                            this.proxyStash[this.connectionUID].connectionEventReciver.emit("H2_REQUEST_DATA_END");
+                            this.proxyStash[this.connectionUID].connectionEventReciver.emit("H2_REQUEST_DATA_END", stream.id);
 
                             if (requestDataPromiseResolved !== undefined) {
 

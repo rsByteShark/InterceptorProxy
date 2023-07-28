@@ -72,7 +72,7 @@ interface GlobalEventEmitter extends EventEmitter {
     //listeners
     on(event: string, listener: (...args: any[]) => void): this
 
-    /**emited when proxy server is ready for reciving connections */
+    /**emited when proxy server is ready for reciving connection calls */
     on(event: "PROXY_SERVER_READY", listener: (port: number) => void): this
 
     /**emited when virtual server is ready for connection with provided UID */
@@ -223,7 +223,7 @@ interface HTTPSConnectionEventsEmitter {
     /**This event is emited when source indicates that there will be no more request data */
     on(event: "HTTPS_REQUEST_DATA_END", listener: () => void): this
 
-    /**This event is recived when http response is recived from target server */
+    /**This event is emited when http response is recived from target server */
     on(event: "HTTPS_RESPONSE", listener: (headers: IncomingHttpHeaders, statusCode: number, statusMessage: string) => void): this
 
     /**This event is emited when target sent some response data */
@@ -265,10 +265,6 @@ interface H2Connection {
      * Initialy it's none  */
     connectionState: "none" | "open" | "closed"
 
-    errors: ProxyConnectionErrorObject[]
-
-    filters: H2ProxyConnectionFilters
-
     applyFilter(eventName: "H2_REQUEST", callback: (stream: ServerHttp2Stream, headers: IncomingHttpHeaders) => IncomingHttpHeaders): void
 
     applyFilter(eventName: "H2_REQUEST_DATA", callback: (requestDataSource: ServerHttp2Stream, requestDataSink: ClientHttp2Stream, data: string | Buffer) => string | Buffer): void
@@ -291,17 +287,17 @@ interface H2ConnectionEventsEmitter {
     /**This event is emited when http2 source stream recived by VirtualServer instance sends some request data.*/
     on(event: "H2_REQUEST_DATA", listener: (requestDataSource: ServerHttp2Stream, data: string | Buffer) => void): this
 
-    /**This event is emited when source indicates that there will be no more request data */
-    on(event: "H2_REQUEST_DATA_END", listener: () => void): this
+    /**This event is emited when source indicates that there will be no more request data. */
+    on(event: "H2_REQUEST_DATA_END", listener: (streamID: number) => void): this
 
     /**This event is emited when VirtualServer recives http2 response on stream to wich ref is in responseDataSource.*/
     on(event: "H2_RESPONSE", listener: (responseDataSource: ClientHttp2Stream, headers: IncomingHttpHeaders) => void): this
 
-    /**This event is emited when target indicates that there will be no more response data */
-    on(event: "H2_RESPONSE_DATA_END", listener: () => void): this
-
     /**This event is emited when http2 stream to target created by VirtualServer instance sends some response data.*/
     on(event: "H2_RESPONSE_DATA", listener: (responseDataSource: ClientHttp2Session, data: string | Buffer) => void): this
+
+    /**This event is emited when target indicates that there will be no more response data */
+    on(event: "H2_RESPONSE_DATA_END", listener: (streamID: number) => void): this
 
 }
 
@@ -386,10 +382,10 @@ interface ConnectionEventReciver extends EventEmitter {
     on(event: "H2_SESSION_CREATED", listener: (h2SessionObjectRef: ClientHttp2Session) => void): this
     on(event: "H2_REQUEST", listener: (stream: ServerHttp2Stream, headers: IncomingHttpHeaders) => void): this
     on(event: "H2_REQUEST_DATA", requestDataSource: ServerHttp2Stream, requestDataSink: ClientHttp2Stream, data: string | Buffer): this
-    on(event: "H2_REQUEST_DATA_END", listener: () => void): this
+    on(event: "H2_REQUEST_DATA_END", listener: (streamID: number) => void): this
     on(event: "H2_RESPONSE", listener: (responseDataSource: ClientHttp2Stream, headers: IncomingHttpHeaders) => void): this
     on(event: "H2_RESPONSE_DATA", listener: (responseDataSource: ClientHttp2Session, responseDataSink: ServerHttp2Stream, data: string | Buffer) => void): this
-    on(event: "H2_RESPONSE_DATA_END", listener: () => void): this
+    on(event: "H2_RESPONSE_DATA_END", listener: (streamID: number) => void): this
     on(event: "HTTPS_REQUEST", listener: (headers: IncomingHttpHeaders, path: string, requestMethod: string) => void): this
     on(event: "HTTPS_REQUEST_DATA", listener: (requestDataSource: IncomingMessage, requestDataSink: ClientRequest, data: Buffer) => void): this
     on(event: "HTTPS_REQUEST_DATA_END", listener: () => void): this
@@ -445,7 +441,7 @@ interface ConnectionEventReciver extends EventEmitter {
     * This event is pure informational listen for it if you gathering data from H2_REQUEST_DATA event
     * to know when to flush gathered data.
    */
-    emit(event: "H2_REQUEST_DATA_END"): void
+    emit(event: "H2_REQUEST_DATA_END", streamID: number): void
 
 
     /**This event is emited when VirtualServer recives http2 response on stream to wich ref is in responseDataSource.
@@ -470,7 +466,7 @@ interface ConnectionEventReciver extends EventEmitter {
      * This event is pure informational listen for it if you gathering data from H2_RESPONSE_DATA event
      * to know when to flush gathered data.
     */
-    emit(event: "H2_RESPONSE_DATA_END"): void
+    emit(event: "H2_RESPONSE_DATA_END", streamID: number): void
 
 
     /**This event is emited when VirtualServer recives http request from source.
@@ -565,7 +561,7 @@ interface ConnectionEventEmitter extends EventEmitter {
     on(event: "H2_REQUEST_DATA", listener: (requestDataSource: ServerHttp2Stream, data: string | Buffer) => void): this
 
     /**This event is emited when source indicates that there will be no more request data */
-    on(event: "H2_REQUEST_DATA_END", listener: () => void): this
+    on(event: "H2_REQUEST_DATA_END", listener: (streamID: number) => void): this
 
     /**This event is emited when VirtualServer recives http2 response on stream to wich ref is in responseDataSource.*/
     on(event: "H2_RESPONSE", listener: (responseDataSource: ClientHttp2Stream, headers: IncomingHttpHeaders) => void): this
@@ -574,7 +570,7 @@ interface ConnectionEventEmitter extends EventEmitter {
     on(event: "H2_RESPONSE_DATA", listener: (responseDataSource: ClientHttp2Session, data: string | Buffer) => void): this
 
     /**This event is emited when target indicates that there will be no more response data */
-    on(event: "H2_RESPONSE_DATA_END", listener: () => void): this
+    on(event: "H2_RESPONSE_DATA_END", listener: (streamID: number) => void): this
 
     /**This event is emited when VirtualServer recives http request from source. */
     on(event: "HTTPS_REQUEST", listener: (headers: IncomingHttpHeaders, path: string, requestMethod: string) => void): this
@@ -611,10 +607,10 @@ interface ConnectionEventEmitter extends EventEmitter {
     emit(event: "H2_SESSION_CREATED", h2SessionObjectRef: ClientHttp2Session): boolean
     emit(event: "H2_REQUEST", requestDataSource: ServerHttp2Stream, headers: IncomingHttpHeaders): boolean
     emit(event: "H2_REQUEST_DATA", requestDataSource: ServerHttp2Stream, data: string | Buffer): boolean
-    emit(event: "H2_REQUEST_DATA_END"): boolean
+    emit(event: "H2_REQUEST_DATA_END", streamID: number): boolean
     emit(event: "H2_RESPONSE", responseDataSource: ClientHttp2Stream, headers: IncomingHttpHeaders): boolean
     emit(event: "H2_RESPONSE_DATA", responseDataSource: ClientHttp2Session, data: string | Buffer): boolean
-    emit(event: "H2_RESPONSE_DATA_END"): boolean
+    emit(event: "H2_RESPONSE_DATA_END", streamID: number): boolean
     emit(event: "HTTPS_REQUEST", headers: IncomingHttpHeaders, path: string, requestMethod: string): boolean
     emit(event: "HTTPS_REQUEST_DATA", requestDataSource: IncomingMessage, data: Buffer): boolean
     emit(event: "HTTPS_REQUEST_DATA_END"): boolean

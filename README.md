@@ -35,7 +35,7 @@ Filters are callback functions that will be executed in order to modify some asp
 
 ## Setting up enviroment
 
-**Important Note**: Remember to never tunneling important data through InterceptorProxy and don't use you `daily-use` sources such as your personal web browser 
+**Important Note**: Remember to never tunneling important data through InterceptorProxy and don't use your `daily-use` sources such as your personal web browser 
 cause this may create some serious security vulnerabilities. It is highly recommended to download separate web browser with it's own certificate storage (for example Firefox Developer Edition) that you will use for testing.
 
 ### Firefox browser as a source
@@ -78,5 +78,5 @@ Now your browser will authenticate virtual servers created by InterceptorProxy a
 
 ## Api Docs
 
-See [`/doc/InterceptorProxy.md`](./doc/InterceptorProxy.md) for Node.js-like documentation of InterceptorProxy class and other classes used to describe connections.
+See [`/doc/InterceptorProxy.md`](./doc/InterceptorProxy.md) for documentation of InterceptorProxy class and other classes used to describe connections.
 
