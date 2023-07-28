@@ -31,7 +31,7 @@ While `virtual server` interprets recived data it is possible with use of expose
 
 Filters are callback functions that will be executed in order to modify some aspects of connection 'on fly' (for example you can apply filter for HTTPS_REQUEST event,to your callback will be passed headers object that you can modify in order to change headers that will be recived by `target`).
 
-**Note**: This describes encrypted connections. This module is still in development and for now don't hanlde unencrypted HTTP connections and don't support some advanced protocol mechanisms such as http2 stream pull feature or websocket extensions. Due to this conditions many connections may fail and process may crash so it is recommended to always listen for node process 'uncaught exception' event to properly handle unexpected behaviours.
+**Note**: This describes encrypted connections. This module is still in development and for now don't handle unencrypted HTTP connections and don't support some advanced protocol mechanisms such as http2 stream pull feature or websocket extensions. Due to this conditions many connections may fail and process may crash so it is recommended to always listen for node process 'uncaught exception' event to properly handle unexpected behaviours.
 
 ## Setting up enviroment
 
