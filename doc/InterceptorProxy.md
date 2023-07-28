@@ -123,7 +123,7 @@ Emited when http2 tunnel is created beetween source and target.
 
 ### Event: 'HTTPS_PROXY_CONNECTION'
 
-- `connection` {HTTPSConnection} object that represents https connection
+- `connection` [HTTPSConnection](#class-httpsconnection) object that represents https connection
 
 Emited when https tunnel is created beetween source and target.
 
