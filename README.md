@@ -58,7 +58,7 @@ proxyInstanceEventsEmiter.on("PROXY_SERVER_READY", (proxyPort) => {
 
 It will create `caCert.pem` and `caCertPrivateKey.pem` files in the same directory as your script.
 
-**Note**: Remember to not delete or move those files as they are required in the same directory as your script to properly handle connections form source.
+**Note**: Remember to not delete or move those files as they are required in the same directory as your script to properly handle connections from source.
 
 Now open your firefox browser go to `Settings -> Privacy & Security -> Certificates`.
 
