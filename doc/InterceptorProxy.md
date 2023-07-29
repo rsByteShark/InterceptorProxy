@@ -212,7 +212,7 @@ Modify `headers` object passed to your callback and then return it to modify hea
 
 When applying filter for `H2_REQUEST_DATA` you can modify data that target of this connection will recive. 
 
-String or Buffer that you will return will be passed to target. Be careful as data may by sended in chunks or may be encoded (ussualy gziped). Return `null` to don't send any data. When you gathering data or modification takes some time remember to listen to `H2_REQUEST_DATA_END` event on this class `connectionEventEmitter` and compare passed to this event listener callback parameter `streamID` with `requestDataSource.id` if it's the same that means you should flush your data with `requestDataSink.write(yourModifiedData)` as returning data may cause `WRITE_AFTER_END` error on connection.
+String or Buffer that you will return will be passed to target. Be careful as data may by sended in chunks or may be encoded (ussualy gziped). Return `null` to don't send any data. When you gathering data or modification takes some time remember to listen to `H2_REQUEST_DATA_END` event on this class `connectionEventEmitter` and compare passed to this event listener callback parameter `streamID` with `requestDataSource.sourceID` if it's the same that means you should flush your data with `requestDataSink.write(yourModifiedData)` as returning data may cause `WRITE_AFTER_END` error on connection.
 
 `requestDataSource` parameter is an reference to http2 stream wich connects source with VirtualServer wich is handling this connection.
 
@@ -232,7 +232,7 @@ Modify `headers` object passed to your callback and then return it to modify hea
 
 When applying filter for `H2_RESPONSE_DATA` you can modify data that source of this connection will recive. 
 
-String or Buffer that you will return will be passed to source. Be careful as data may by sended in chunks or may be encoded (ussualy gziped). Return `null` to don't send any data. When you gathering data or modification takes some time remember to listen to `H2_RESPONSE_DATA_END` event on this class `connectionEventEmitter` and compare passed to this event listener callback parameter `streamID` with `responseDataSource.id` if it's the same that means you should flush your data with `responseDataSink.write(yourModifiedData)` as returning data may cause `WRITE_AFTER_END` error on connection.
+String or Buffer that you will return will be passed to source. Be careful as data may by sended in chunks or may be encoded (ussualy gziped). Return `null` to don't send any data. When you gathering data or modification takes some time remember to listen to `H2_RESPONSE_DATA_END` event on this class `connectionEventEmitter` and compare passed to this event listener callback parameter `streamID` with `responseDataSource.sourceID` if it's the same that means you should flush your data with `responseDataSink.write(yourModifiedData)` as returning data may cause `WRITE_AFTER_END` error on connection.
 
 ## Class: H2ConnectionEventsEmitter
 

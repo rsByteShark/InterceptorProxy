@@ -295,6 +295,8 @@ class VirtualServer {
 
             sessionFromSource.on('stream', (stream, headers, flags) => {
 
+                stream.sourceID = stream.id;
+
                 //notify ProxyConnection instance 
                 this.proxyStash[this.connectionUID].connectionEventReciver.emit("H2_REQUEST", stream, headers).then((resolvedHeaders) => {
 
@@ -304,6 +306,8 @@ class VirtualServer {
                         const streamToTarget = h2SessionToTarget.request(resolvedHeaders, {
 
                         });
+
+                        streamToTarget.sourceID = stream.id;
 
                         // console.log(`stream created for ${headers[":authority"]} for source stream with id ${stream.id}`);
 
@@ -401,7 +405,7 @@ class VirtualServer {
 
                         streamToTarget.on("end", () => {
 
-                            this.proxyStash[this.connectionUID].connectionEventReciver.emit("H2_RESPONSE_DATA_END", stream.id);
+                            this.proxyStash[this.connectionUID].connectionEventReciver.emit("H2_RESPONSE_DATA_END", streamToTarget.sourceID);
 
                             if (responseDataPromiseResolved !== undefined) {
 

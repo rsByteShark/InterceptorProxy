@@ -276,25 +276,34 @@ interface H2Connection {
 
 }
 
+
+interface H2RequestDataSource extends ServerHttp2Stream {
+    sourceID: number
+}
+
+interface H2ResponseDataSource extends ClientHttp2Stream {
+    sourceID: number
+}
+
 interface H2ConnectionEventsEmitter {
 
     /**This event is emited when source created http2 session with target */
     on(event: "H2_SESSION_CREATED", listener: (h2SessionObjectRef: ClientHttp2Session) => void): this
 
     /**This event is emited when VirtualServer recives http2 stream that indicates http request from source.*/
-    on(event: "H2_REQUEST", listener: (requestDataSource: ServerHttp2Stream, headers: IncomingHttpHeaders) => void): this
+    on(event: "H2_REQUEST", listener: (requestDataSource: H2RequestDataSource, headers: IncomingHttpHeaders) => void): this
 
     /**This event is emited when http2 source stream recived by VirtualServer instance sends some request data.*/
-    on(event: "H2_REQUEST_DATA", listener: (requestDataSource: ServerHttp2Stream, data: string | Buffer) => void): this
+    on(event: "H2_REQUEST_DATA", listener: (requestDataSource: H2RequestDataSource, data: string | Buffer) => void): this
 
     /**This event is emited when source indicates that there will be no more request data. */
     on(event: "H2_REQUEST_DATA_END", listener: (streamID: number) => void): this
 
     /**This event is emited when VirtualServer recives http2 response on stream to wich ref is in responseDataSource.*/
-    on(event: "H2_RESPONSE", listener: (responseDataSource: ClientHttp2Stream, headers: IncomingHttpHeaders) => void): this
+    on(event: "H2_RESPONSE", listener: (responseDataSource: H2ResponseDataSource, headers: IncomingHttpHeaders) => void): this
 
     /**This event is emited when http2 stream to target created by VirtualServer instance sends some response data.*/
-    on(event: "H2_RESPONSE_DATA", listener: (responseDataSource: ClientHttp2Session, data: string | Buffer) => void): this
+    on(event: "H2_RESPONSE_DATA", listener: (responseDataSource: H2ResponseDataSource, data: string | Buffer) => void): this
 
     /**This event is emited when target indicates that there will be no more response data */
     on(event: "H2_RESPONSE_DATA_END", listener: (streamID: number) => void): this
