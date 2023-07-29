@@ -92,7 +92,7 @@ Now your browser will redirect it's traffic and authenticate virtual servers cre
 ### Loging to console connections types and hosts to wich source is connecting
 
 ```js
-const InterceptorProxy = require("../InterceptorProxy.js");
+const InterceptorProxy = require("InterceptorProxy.js");
 
 //create instance of InterceptorProxy class to create http proxy server
 //select ignore browser telemetry option to see only calls that sites you will analyze will make
@@ -163,7 +163,7 @@ proxyEventsEmitter.on("WSS_PROXY_CONNECTION", (connection) => {
 ### Gathering http2 connections streams, requests and responses headers into simple database
 
 ```js
-const InterceptorProxy = require("../InterceptorProxy.js");
+const InterceptorProxy = require("InterceptorProxy.js");
 
 const proxyInstance = new InterceptorProxy({ ignoreBrowserTelemetry: true });
 
